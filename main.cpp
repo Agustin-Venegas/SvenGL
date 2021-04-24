@@ -6,11 +6,14 @@
 using namespace std; //the
 
 int main()
-{
+{    
+
+
+
 //variables de ventana
 glfwWindowHint(GLFW_SAMPLES, 4);
 glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); //pan
 glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 GLFWwindow* window;
