@@ -11,7 +11,7 @@ using namespace glm;
 
 //#include <common/shader.hpp>
 
-void hacertriangulo(){
+void hacertriangulo(){ //hola zerg
 
 GLuint VertexArrayID;
 glGenVertexArrays(1, &VertexArrayID);
