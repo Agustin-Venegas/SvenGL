@@ -1,7 +1,11 @@
 #include "utils.h"
 #include <iostream>
+#include <string>
+#include <fstream>
 
-bool CheckShaderCompile(GLuint shader)
+using namespace std;
+
+bool Utils::CheckShaderCompile(GLuint shader)
 {
     int success;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success); //pedimos el parametro compile status de shader
@@ -18,7 +22,7 @@ bool CheckShaderCompile(GLuint shader)
 }
 
 
-bool CheckProgramCompile(GLuint program) 
+bool Utils::CheckProgramCompile(GLuint program) 
 {
     int success = true;
 
@@ -31,4 +35,24 @@ bool CheckProgramCompile(GLuint program)
     }
 
     return success;
+}
+
+string Utils::ReadFile(string filename) 
+{
+    string content;
+    ifstream fileStream(filename, std::ios::in);
+
+    if(!fileStream.is_open()) {
+        std::cerr << "Could not read file " << filename << ". File does not exist." << std::endl;
+        return "";
+    }
+
+    string line = "";
+    while(!fileStream.eof()) {
+        std::getline(fileStream, line);
+        content.append(line + "\n");
+    }
+
+    fileStream.close();
+    return content;
 }

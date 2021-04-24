@@ -1,5 +1,11 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-bool CheckShaderCompile(GLuint shader);
-bool CheckProgramCompile(GLuint program);
+using namespace std;
+
+class Utils
+{
+    static bool CheckShaderCompile(GLuint shader);
+    static bool CheckProgramCompile(GLuint program);
+    static string ReadFile(string filename);
+};
