@@ -58,7 +58,6 @@ int main()
 
 
 
-
 	//Ciclo Principal de Dibujado
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
@@ -67,6 +66,7 @@ int main()
     	glClear( GL_COLOR_BUFFER_BIT );
 
     	// Aqui va todo lo que se dibuja
+		
 
     	// Cambiar buffers (imagen de antes/imagen de ahora)
     	glfwSwapBuffers(window);
