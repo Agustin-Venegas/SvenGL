@@ -36,8 +36,8 @@ bool Utils::CheckProgramCompile(GLuint program)
     return success;
 }
 
-string Utils::ReadFile(const string filename) {
-    string content;
+std::string Utils::ReadFile(const char *filename) {
+    std::string content;
     ifstream fileStream(filename, std::ios::in);
 
     if(!fileStream.is_open()) {
@@ -45,7 +45,7 @@ string Utils::ReadFile(const string filename) {
         return "";
     }
 
-    string line = "";
+    std::string line = "";
     while(!fileStream.eof()) {
         std::getline(fileStream, line);
         content.append(line + "\n");
@@ -63,7 +63,7 @@ void Utils::CompileShader(const GLuint& shader, string source)
 
     if (!CheckShaderCompile(shader)) 
     {
-        std::cout << "ERROR" << std::endl;
+        std::cout << "ERROR FATAL" << std::endl;
         return;
     }
 

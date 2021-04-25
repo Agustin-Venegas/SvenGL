@@ -3,6 +3,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+#include "utils.h"
+
 using namespace std; //the
 
 int main()
@@ -15,9 +17,9 @@ int main()
 	}
 
 	//variables de ventana
-	glfwWindowHint(GLFW_SAMPLES, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); // 
+	glfwWindowHint(GLFW_SAMPLES, 4); //antialiasing
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); //version 3.3
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); 
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	GLFWwindow* window;
@@ -29,11 +31,38 @@ int main()
 	}
 
 	glfwMakeContextCurrent(window);
+	glewExperimental = true; // Needed for core profile
+	if (glewInit() != GLEW_OK) {
+    	fprintf(stderr, "Failed to initialize GLEW\n");
+    	return -1;
+	}
+
+	//Cargar Shaders y programa
+	GLuint vertex;
+	vertex = glCreateShader(GL_VERTEX_SHADER);
+	Utils::CompileShader(vertex, Utils::ReadFile("vertex.elformato"));
+
+	GLuint fragment;
+	fragment = glCreateShader(GL_FRAGMENT_SHADER);
+	Utils::CompileShader(fragment, Utils::ReadFile("fragment.elformato"));
+	
+	GLuint program = glCreateProgram();
+	glAttachShader(program, vertex);
+	glAttachShader(program, fragment);
+	glLinkProgram(program);
+	Utils::CheckProgramCompile(program);
+
+	glDeleteShader(vertex); //se pueden borrar sin problemas dice
+    glDeleteShader(fragment);
 
 
+
+
+
+	//Ciclo Principal de Dibujado
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-	do{ //ciclo principal de dibujado
+	do {
     	//Borrar la ventana con el color
     	glClear( GL_COLOR_BUFFER_BIT );
 
