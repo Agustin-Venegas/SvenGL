@@ -1,6 +1,5 @@
 #include "utils.h"
 #include <iostream>
-#include <string>
 #include <fstream>
 
 using namespace std;
@@ -37,8 +36,7 @@ bool Utils::CheckProgramCompile(GLuint program)
     return success;
 }
 
-string Utils::ReadFile(string filename) 
-{
+string Utils::ReadFile(const string filename) {
     string content;
     ifstream fileStream(filename, std::ios::in);
 
@@ -55,4 +53,18 @@ string Utils::ReadFile(string filename)
 
     fileStream.close();
     return content;
+}
+
+void Utils::CompileShader(const GLuint& shader, string source) 
+{
+    const char *const_source = source.c_str();
+    glShaderSource(shader, 1, &const_source, NULL);
+    glCompileShader(shader);
+
+    if (!CheckShaderCompile(shader)) 
+    {
+        std::cout << "ERROR" << std::endl;
+        return;
+    }
+
 }
