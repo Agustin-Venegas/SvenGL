@@ -3,6 +3,10 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+//Rotacion
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform.hpp>
+
 // Include standard headers
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,7 +15,7 @@ using namespace glm;
 
 //#include <common/shader.hpp>
 
-void hacertriangulo(){ //hola zerg
+void hacertriangulo(){ 
 
 GLuint VertexArrayID;
 glGenVertexArrays(1, &VertexArrayID);
@@ -49,3 +53,26 @@ glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total ->
 glDisableVertexAttribArray(0);
 
 }
+
+void Girar(){
+
+glm::mat4 rotate;
+
+glm::mat4 myMatrix;
+glm::vec4 myVector;
+// fill myMatrix and myVector somehow
+glm::vec4 transformedVector = myMatrix * myVector; // Again, in this order ! this is important.
+
+
+glm::vec3 myRotationAxis(5, 0, 0);
+//glm::rotate(0.1, 4.5); //hay que arreglarlo y no se como, pide declararlo como las weas de arriba 
+
+}
+
+//codigo de traslacion, esta comentado porque para eso hay que crear un cubo
+
+//#include <glm/gtx/transform.hpp> // after <glm/glm.hpp>
+ 
+//glm::mat4 myMatrix = glm::translate(glm::mat4(), glm::vec3(10.0f, 0.0f, 0.0f));
+//glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
+//glm::vec4 transformedVector = myMatrix * myVector; // guess the result//
