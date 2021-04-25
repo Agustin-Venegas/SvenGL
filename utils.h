@@ -7,10 +7,13 @@
 
 
 using namespace std;
+
 class Utils {
     public:
     static bool CheckShaderCompile(GLuint shader);
     static bool CheckProgramCompile(GLuint program);
     static string ReadFile(const char *filename);
     static void CompileShader(const GLuint& shader, string source);
+
+    static GLuint program; //ID programa shaders
 };

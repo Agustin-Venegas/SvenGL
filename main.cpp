@@ -2,8 +2,12 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 
 #include "utils.h"
+#include "Scene.h"
 
 using namespace std; //the
 
@@ -23,7 +27,7 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	GLFWwindow* window;
-	window = glfwCreateWindow( 1024, 768, "La Ventana", NULL, NULL);
+	window = glfwCreateWindow( 800, 600, "La Ventana", NULL, NULL);
 	if( window == NULL ){
     	fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
     	glfwTerminate();
@@ -46,17 +50,18 @@ int main()
 	fragment = glCreateShader(GL_FRAGMENT_SHADER);
 	Utils::CompileShader(fragment, Utils::ReadFile("fragment.elformato"));
 	
-	GLuint program = glCreateProgram();
-	glAttachShader(program, vertex);
-	glAttachShader(program, fragment);
-	glLinkProgram(program);
-	Utils::CheckProgramCompile(program);
+	Utils::program = glCreateProgram();
+	glAttachShader(Utils::program, vertex);
+	glAttachShader(Utils::program, fragment);
+	glLinkProgram(Utils::program);
+	Utils::CheckProgramCompile(Utils::program);
 
 	glDeleteShader(vertex); //se pueden borrar sin problemas dice
     glDeleteShader(fragment);
 
 
-
+	//Iniciar Escenas
+	Scene::InitVals();
 
 	//Ciclo Principal de Dibujado
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
@@ -65,8 +70,8 @@ int main()
     	//Borrar la ventana con el color
     	glClear( GL_COLOR_BUFFER_BIT );
 
-    	// Aqui va todo lo que se dibuja
-		
+    	// Aqui va todo lo que se dibuja y actualiza
+		Scene::actualScene.Update((float)glfwGetTime());
 
     	// Cambiar buffers (imagen de antes/imagen de ahora)
     	glfwSwapBuffers(window);
