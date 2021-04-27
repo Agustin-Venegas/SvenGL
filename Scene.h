@@ -1,7 +1,5 @@
 #pragma once
 
-#include "utils.h"
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -21,8 +19,7 @@ class Scene
 
     static void InitVals(); //iniciar valores usados en todas las escenas
 
-    static glm::mat4 projection;
-    static Scene actualScene;
+    static glm::mat4 projection; //todos usan esto
 
     private:
     glm::mat4 camera;

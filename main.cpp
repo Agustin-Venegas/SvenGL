@@ -6,7 +6,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 
-#include "utils.h"
+#include "Utils.h"
+#include "Model.h"
 #include "Scene.h"
 
 using namespace std; //the
@@ -59,19 +60,18 @@ int main()
 	glDeleteShader(vertex); //se pueden borrar sin problemas dice
     glDeleteShader(fragment);
 
+	//Ciclo Principal de Dibujado
+	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
 	//Iniciar Escenas
 	Scene::InitVals();
-
-	//Ciclo Principal de Dibujado
-	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
 	do {
     	//Borrar la ventana con el color
     	glClear( GL_COLOR_BUFFER_BIT );
 
     	// Aqui va todo lo que se dibuja y actualiza
-		Scene::actualScene.Update((float)glfwGetTime());
+		//Scene::actualScene.Update((float)glfwGetTime());
 
     	// Cambiar buffers (imagen de antes/imagen de ahora)
     	glfwSwapBuffers(window);

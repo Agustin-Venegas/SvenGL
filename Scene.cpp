@@ -1,4 +1,6 @@
+#include "Utils.h"
 #include "Scene.h"
+
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -8,6 +10,8 @@
 
 #include <vector>
 
+glm::mat4 Scene::projection;
+
 Scene::Scene() 
 {
     camera = glm::lookAt(
@@ -15,6 +19,8 @@ Scene::Scene()
     glm::vec3(0,0,0), // and looks at the origin
     glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
     );
+
+
 
     glGenVertexArrays(1, &VAO); //crear un VAO vacio, debe ser rellenado en edit
     VBOs = std::vector<GLuint>(); //vector de IDs vacio
@@ -36,7 +42,7 @@ void Scene::Init() //cada hijo de escena edita esta funcion
     
 }
 
-static void InitVals()
+void Scene::InitVals()
 {
     //iniciar la cosa
     Scene::projection = glm::perspective(glm::radians(45.0f), (float)4/(float)3, 0.1f, 100.0f);

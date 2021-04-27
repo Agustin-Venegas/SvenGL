@@ -1,6 +1,6 @@
 # build an executable named myprog from myprog.c
-all: main.cpp utils.cpp Model.cpp Scene.cpp
-	g++ -g -Wall -o Tarea1 main.cpp utils.cpp Model.cpp Scene.cpp -lGL -lGLEW -lglfw
+all : Utils.cpp Scene.cpp main.cpp
+	g++ -g -Wall -Wextra -o Tarea1 Utils.cpp Scene.cpp main.cpp -lGL -lGLEW -lglfw
 
-clean: 
+clean:
 	$(RM) Tarea1

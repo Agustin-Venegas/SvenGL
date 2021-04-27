@@ -1,8 +1,10 @@
-#include "utils.h"
+#include "Utils.h"
 #include <iostream>
 #include <fstream>
 
 using namespace std;
+
+GLuint Utils::program;
 
 bool Utils::CheckShaderCompile(GLuint shader)
 {
