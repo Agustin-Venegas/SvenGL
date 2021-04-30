@@ -4,7 +4,9 @@
 
 using namespace std;
 
-GLuint Utils::program;
+GLuint Utils::program;//no borrar
+
+float Utils::deltatime = 0;//cock
 
 bool Utils::CheckShaderCompile(GLuint shader)
 {

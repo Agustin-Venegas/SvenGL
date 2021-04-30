@@ -4,6 +4,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <time.h>
+#include <chrono>
 
 
 #include "Utils.h"
@@ -42,6 +44,10 @@ int main()
     	return -1;
 	}
 
+	auto t_start = chrono::high_resolution_clock::now();
+    // the work...
+    auto t_end = chrono::high_resolution_clock::now();
+
 	//Cargar Shaders y programa
 	GLuint vertex;
 	vertex = glCreateShader(GL_VERTEX_SHADER);
@@ -70,7 +76,12 @@ int main()
     	//Borrar la ventana con el color
     	glClear( GL_COLOR_BUFFER_BIT );
 
-    	// Aqui va todo lo que se dibuja y actualiza
+    	
+		
+		// Aqui va todo lo que se dibuja y actualiza :3
+		t_start = t_end;
+		t_end = std::chrono::high_resolution_clock::now();
+    	Utils::deltatime = std::chrono::duration<float>(t_end - t_start).count();
 		//Scene::actualScene.Update((float)glfwGetTime());
 
     	// Cambiar buffers (imagen de antes/imagen de ahora)
@@ -81,6 +92,7 @@ int main()
 	(glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && !glfwWindowShouldClose(window));
 
     
+
     cout << "Hello World!" << endl;
     return 0;
 }

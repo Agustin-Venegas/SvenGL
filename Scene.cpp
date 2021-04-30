@@ -28,7 +28,7 @@ Scene::Scene()
     Init();
 
     //luego de inicializar lo especifico, usar esta camara
-    unsigned int transformLoc = glGetUniformLocation(Utils::program, "transform");
+    unsigned int transformLoc = glGetUniformLocation(Utils::program, "transform");//
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(camera));
 }
 

@@ -10,6 +10,7 @@ using namespace std;
 
 class Utils {
     public:
+    static float deltatime;
     static bool CheckShaderCompile(GLuint shader);
     static bool CheckProgramCompile(GLuint program);
     static string ReadFile(const char *filename);
