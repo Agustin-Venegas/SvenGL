@@ -18,8 +18,8 @@ class Model
 
     GLuint getBO(); //regresa el bufferObject
 
-    void Rotate();
-    void Move();
+    void Rotar();
+    void Trasladar();
 
     private:
     GLuint bufferObject;
