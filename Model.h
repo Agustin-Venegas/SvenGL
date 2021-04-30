@@ -27,20 +27,11 @@ class Model
     private:
     GLuint bufferObject;
 
-void HacerMatriz(){
+void HacerMatriz();
 
+glm::vec4 Trasladar(glm::vec4 myVector);
+glm::mat4 Rotar(glm::vec3 myRotationAxis, float);
 
-
-}
-
-glm::vec4 Trasladar(glm::vec4 myVector){
-
-}
-
-void Rotar(glm::vec3 myRotationAxis, float){
-
-
-
-}
+void Dibujar();
 
 };
