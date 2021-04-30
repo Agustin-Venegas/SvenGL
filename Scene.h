@@ -16,6 +16,7 @@ class Scene
     
     virtual void Update(float time); //cada hijo de escena edita esta funcion
     virtual void Init();
+    virtual void Draw();
 
     static void InitVals(); //iniciar valores usados en todas las escenas
 

@@ -37,6 +37,18 @@ void Scene::Update(float time) //cada hijo de escena edita esta funcion
 
 }
 
+void Scene::Draw() 
+{
+    glBindVertexArray(VAO); //poner esta escena
+
+    for (GLuint vbo : VBOs) //por cada "objeto"
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+    }
+}
+
 void Scene::Init() //cada hijo de escena edita esta funcion
 {
     
