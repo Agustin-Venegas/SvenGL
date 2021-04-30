@@ -22,7 +22,6 @@ class Scene
 
     static glm::mat4 projection; //todos usan esto
 
-    private:
     glm::mat4 camera;
     glm::vec3 pos;
     glm::vec3 lookat;
