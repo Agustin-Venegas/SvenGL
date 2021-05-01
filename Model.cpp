@@ -5,12 +5,12 @@ Model::Model()
 
 }
 
-Model::Model(const float *vertex, bool color = false) 
+Model::Model(const float *vertex, bool color) 
 {
 
 }
 
-void Model::HacerMatriz() //con esto se crea la matriz
+void Model::HacerMatriz() //con esto se crea una matriz
 {
     glm::mat4 matriz1 = glm::translate(glm::mat4(), glm::vec3(10.0f, 0.0f, 0.0f));
     glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);

@@ -7,46 +7,49 @@
 #include <time.h>
 #include <chrono>
 
-
 #include "Utils.h"
 #include "Model.h"
 #include "Scene.h"
+#include "Scene1.h"
+#include "SceneManager.h"
 
 using namespace std; //the
 
 int main()
-{    
+{
 	glewExperimental = true; // Needed for core profile
-	if( !glfwInit() )
+	if (!glfwInit())
 	{
-    	fprintf( stderr, "Failed to initialize GLFW\n" );
-    	return -1;
+		fprintf(stderr, "Failed to initialize GLFW\n");
+		return -1;
 	}
 
 	//variables de ventana
-	glfwWindowHint(GLFW_SAMPLES, 4); //antialiasing
+	glfwWindowHint(GLFW_SAMPLES, 4);			   //antialiasing
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); //version 3.3
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); 
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow* window;
-	window = glfwCreateWindow( 800, 600, "La Ventana", NULL, NULL);
-	if( window == NULL ){
-    	fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
-    	glfwTerminate();
-    	return -1;
+	GLFWwindow *window;
+	window = glfwCreateWindow(800, 600, "La Ventana", NULL, NULL);
+	if (window == NULL)
+	{
+		fprintf(stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
+		glfwTerminate();
+		return -1;
 	}
 
 	glfwMakeContextCurrent(window);
 	glewExperimental = true; // Needed for core profile
-	if (glewInit() != GLEW_OK) {
-    	fprintf(stderr, "Failed to initialize GLEW\n");
-    	return -1;
+	if (glewInit() != GLEW_OK)
+	{
+		fprintf(stderr, "Failed to initialize GLEW\n");
+		return -1;
 	}
 
 	auto t_start = chrono::high_resolution_clock::now();
-    // the work...
-    auto t_end = chrono::high_resolution_clock::now();
+	// the work...
+	auto t_end = chrono::high_resolution_clock::now();
 
 	//Cargar Shaders y programa
 	GLuint vertex;
@@ -56,7 +59,7 @@ int main()
 	GLuint fragment;
 	fragment = glCreateShader(GL_FRAGMENT_SHADER);
 	Utils::CompileShader(fragment, Utils::ReadFile("fragment.elformato"));
-	
+
 	Utils::program = glCreateProgram();
 	glAttachShader(Utils::program, vertex);
 	glAttachShader(Utils::program, fragment);
@@ -64,7 +67,22 @@ int main()
 	Utils::CheckProgramCompile(Utils::program);
 
 	glDeleteShader(vertex); //se pueden borrar sin problemas dice
-    glDeleteShader(fragment);
+	glDeleteShader(fragment);
+
+	//PROGRAMA ESCENA 1
+	GLuint fragment1 = glCreateShader(GL_FRAGMENT_SHADER);
+	Utils::CompileShader(fragment1, Utils::ReadFile("color1.shader"));
+
+	GLuint vertex1 = glCreateShader(GL_VERTEX_SHADER);
+	Utils::CompileShader(vertex1, Utils::ReadFile("vertex1.shader"));
+
+	GLuint program1 = glCreateProgram();
+	glAttachShader(program1, vertex1);
+	glAttachShader(program1, fragment1);
+	Utils::CheckProgramCompile(program1);
+
+	glDeleteShader(vertex1); //se pueden borrar sin problemas dice
+	glDeleteShader(fragment1);
 
 	//Ciclo Principal de Dibujado
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
@@ -72,27 +90,33 @@ int main()
 	//Iniciar Escenas
 	Scene::InitVals();
 
-	do {
-    	//Borrar la ventana con el color
-    	glClear( GL_COLOR_BUFFER_BIT );
+	SceneManager sceneManager = SceneManager();
 
-    	
-		
+	scene1 escena1 = scene1(program1);
+	sceneManager.AddScene(&escena1);
+
+	do
+	{
+		//Borrar la ventana con el color
+		glClear(GL_COLOR_BUFFER_BIT);
+
 		// Aqui va todo lo que se dibuja y actualiza :3
 		t_start = t_end;
 		t_end = std::chrono::high_resolution_clock::now();
-    	Utils::deltatime = std::chrono::duration<float>(t_end - t_start).count();
+		Utils::deltatime = std::chrono::duration<float>(t_end - t_start).count();
+
+		//actualizar y dibujar escena
 		//Scene::actualScene.Update((float)glfwGetTime());
 
-    	// Cambiar buffers (imagen de antes/imagen de ahora)
-    	glfwSwapBuffers(window);
-    	glfwPollEvents();
+		sceneManager.Update(Utils::deltatime);
+		sceneManager.Draw();
 
-	} while
-	(glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && !glfwWindowShouldClose(window));
+		// Cambiar buffers (imagen de antes/imagen de ahora)
+		glfwSwapBuffers(window);
+		glfwPollEvents();
 
-    
+	} while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && !glfwWindowShouldClose(window));
 
-    cout << "Hello World!" << endl;
-    return 0;
+	cout << "Hello World!" << endl;
+	return 0;
 }

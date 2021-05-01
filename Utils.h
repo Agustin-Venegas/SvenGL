@@ -16,5 +16,5 @@ class Utils {
     static string ReadFile(const char *filename);
     static void CompileShader(const GLuint& shader, string source);
 
-    static GLuint program; //ID programa shaders
+    static GLuint program; //ID programa shaders default
 };
