@@ -4,8 +4,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
 #include <vector>
+#include "Utils.h"
 #include "Scene.h"
 #include "Model.h"
 #include "triangulo.h"
@@ -21,6 +21,7 @@ public:
     virtual void Update(float time, GLFWwindow *window); 
     virtual void Init() override;
     virtual void Draw() override;
+    
 
 };
 

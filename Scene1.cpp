@@ -8,6 +8,7 @@
 #include <time.h>
 #include <chrono>
 
+
 // This will identify our vertex buffer
 GLuint vertexbuffer[2];
 
@@ -66,7 +67,7 @@ void scene1::Init() //cada hijo de escena edita esta funcion
 
 void scene1::Update(float time, GLFWwindow *window) 
 {
-    
+
     triangle1.Rotate(vec3(0,0,time));
     if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
         triangle1.pos += vec3(-time,0,0);
@@ -79,6 +80,8 @@ void scene1::Update(float time, GLFWwindow *window)
 
     triangle1.PassToBuffer(g_vertex_buffer_data1);
     triangle2.PassToBuffer(g_vertex_buffer_data2);
+
+
     
 }
 
