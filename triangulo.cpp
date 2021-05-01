@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
+#include "triangulo.h"
 
 //Rotacion
 #include <glm/gtc/matrix_transform.hpp>
@@ -16,11 +17,8 @@ using namespace glm;
 
 //#include <common/shader.hpp>
 
+// An array of 3 vectors which represents 3 vertices
 
-class Triangle
-{
-    // An array of 3 vectors which represents 3 vertices
-public:
     glm::vec3 vertices[3] = {
         vec3(-1, -1, 0),
         vec3(1, -1, 0),
@@ -42,9 +40,6 @@ public:
             j++;
         }
     }
-};
-
-Triangle triangle1, triangle2;
 
 static GLfloat g_vertex_buffer_data1[] = {
     -1.0f, -1.0f, 0.0f,
@@ -71,7 +66,7 @@ static const GLfloat g_vertex_buffer_data[] = {
    0.0f,  1.0f, 0.0f,
 };
 
-// This will identify our vertex buffer
+// Aqui se crea en triangulo y lo lleva a la tarjeta de video
 GLuint vertexbuffer;
 // Generate 1 buffer, put the resulting identifier in vertexbuffer
 glGenBuffers(1, &vertexbuffer);

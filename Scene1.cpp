@@ -3,7 +3,6 @@
 #include <iostream>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
-
 #include "Scene1.h"
 #include <time.h>
 #include <chrono>
@@ -81,8 +80,24 @@ void scene1::Update(float time, GLFWwindow *window)
     triangle1.PassToBuffer(g_vertex_buffer_data1);
     triangle2.PassToBuffer(g_vertex_buffer_data2);
 
+    //darle color al shader
+glm::vec3 rojo = vec3(1.0f, 0.0f, 0.0f);
 
-    
+//cambiar color del shader
+if(glfwGetKey(window, GLFW_KEY_1)==GLFW_PRESS){
+        glm::vec3 rojo = vec3(1.0f, 0.0f, 0.0f);
+    }
+else if(glfwGetKey(window, GLFW_KEY_2)==GLFW_PRESS){
+        glm::vec3 rojo = vec3(0.0f, 1.0f, 0.0f);
+    }
+else if(glfwGetKey(window, GLFW_KEY_3)==GLFW_PRESS){
+        glm::vec3 rojo = vec3(0.0f, 0.0f, 1.0f);
+    }
+       
+unsigned int lugar = glGetUniformLocation(Shader, "TriColor");
+glUniform3fv(lugar, 1, (&rojo[0]));
+
+
 }
 
 
