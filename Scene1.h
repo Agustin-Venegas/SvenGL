@@ -7,6 +7,8 @@
 
 #include <vector>
 #include "Scene.h"
+#include "Model.h"
+#include "triangulo.h"
 
 class scene1:public Scene{
 
@@ -16,7 +18,7 @@ public:
     scene1(GLuint program);
     ~scene1();
 
-    virtual void Update(float time) override; 
+    virtual void Update(float time, GLFWwindow *window); 
     virtual void Init() override;
     virtual void Draw() override;
 

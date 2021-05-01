@@ -7,7 +7,7 @@ Model::Model()
 
 Model::Model(const float *vertex, bool color) 
 {
-
+    
 }
 
 void Model::HacerMatriz() //con esto se crea una matriz
