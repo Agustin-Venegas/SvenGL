@@ -13,19 +13,22 @@ class Scene
 {
     public:
     Scene();
+    Scene(GLuint program);
     
     virtual void Update(float time); //cada hijo de escena edita esta funcion
     virtual void Init();
     virtual void Draw();
+    
 
     static void InitVals(); //iniciar valores usados en todas las escenas
 
-    static glm::mat4 projection; //todos usan esto
+    static glm::mat4 projection; //todas las escenas podrian usar esto
 
     glm::mat4 camera;
     glm::vec3 pos;
     glm::vec3 lookat;
 
+    GLuint Shader;
     GLuint VAO;
     std::vector<GLuint> VBOs;
 };

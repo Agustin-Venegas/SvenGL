@@ -1,3 +1,4 @@
+#pragma once
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -10,6 +11,10 @@
 class scene1:public Scene{
 
 public:
+
+    scene1();
+    scene1(GLuint program);
+    ~scene1();
 
     virtual void Update(float time) override; 
     virtual void Init() override;
