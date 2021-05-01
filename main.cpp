@@ -51,7 +51,7 @@ int main()
 	// the work...
 	auto t_end = chrono::high_resolution_clock::now();
 
-	//Cargar Shaders y programa
+	//Cargar Shaders y programa de ejemplo
 	GLuint vertex;
 	vertex = glCreateShader(GL_VERTEX_SHADER);
 	Utils::CompileShader(vertex, Utils::ReadFile("vertex.elformato"));
@@ -69,6 +69,8 @@ int main()
 	glDeleteShader(vertex); //se pueden borrar sin problemas dice
 	glDeleteShader(fragment);
 
+
+
 	//PROGRAMA ESCENA 1
 	GLuint fragment1 = glCreateShader(GL_FRAGMENT_SHADER);
 	Utils::CompileShader(fragment1, Utils::ReadFile("color1.shader"));
@@ -84,17 +86,19 @@ int main()
 	glDeleteShader(vertex1); //se pueden borrar sin problemas dice
 	glDeleteShader(fragment1);
 
-	//Ciclo Principal de Dibujado
+
+
+	//Tipo de input a usar
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-	//Iniciar Escenas
+	//Iniciar Escenas y manager
 	Scene::InitVals();
 
-	SceneManager sceneManager = SceneManager();
-
 	scene1 escena1 = scene1(program1);
-	sceneManager.AddScene(&escena1);
+	SceneManager::Instance.AddScene(&escena1);
 
+
+	//CICLO PRINCIPAL DEL PROGRAMA
 	do
 	{
 		//Borrar la ventana con el color
@@ -106,10 +110,8 @@ int main()
 		Utils::deltatime = std::chrono::duration<float>(t_end - t_start).count();
 
 		//actualizar y dibujar escena
-		//Scene::actualScene.Update((float)glfwGetTime());
-
-		sceneManager.Update(Utils::deltatime);
-		sceneManager.Draw();
+		SceneManager::Instance.Update(Utils::deltatime);
+		SceneManager::Instance.Draw();
 
 		// Cambiar buffers (imagen de antes/imagen de ahora)
 		glfwSwapBuffers(window);
