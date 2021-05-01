@@ -17,8 +17,11 @@ class SceneManager
     void AddScene(Scene* scene);
     void Update(float time);
     void Draw();
+    void ChangeScene(int i);
+
+    static SceneManager Instance;
 
     private:
-    std::vector<Scene> scenes;
+    std::vector<Scene*> scenes;
     Scene* actualScene;
 };
