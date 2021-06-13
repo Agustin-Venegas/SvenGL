@@ -1,3 +1,0 @@
-/mnt/c/Users/gebri/OneDrive/Documentos/GitHub/SvenGL/CMakeFiles/rebuild_cache.dir
-/mnt/c/Users/gebri/OneDrive/Documentos/GitHub/SvenGL/CMakeFiles/edit_cache.dir
-/mnt/c/Users/gebri/OneDrive/Documentos/GitHub/SvenGL/CMakeFiles/Tarea1.dir
