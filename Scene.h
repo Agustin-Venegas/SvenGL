@@ -1,10 +1,10 @@
 #pragma once
 
-//tambien es una clase abstracta
+//Ya no es una clase abstracta :c
 class Scene
 {
     public:
-    virtual void Init() =0;
-    virtual void Update(float dt) =0;
-    virtual void Draw(float dt) =0;
+    virtual void Init();
+    virtual void Update(float dt);
+    virtual void Draw(float dt);
 };
