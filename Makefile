@@ -1,6 +1,13 @@
-# build an executable named myprog from myprog.c
-all : load_stb_image.cpp Utils.cpp Svenium.cpp Cubo.cpp Scene1.cpp main.cpp
-	g++ -g -Wall -Wextra -o Tarea2 load_stb_image.cpp Utils.cpp Svenium.cpp Cubo.cpp Scene1.cpp main.cpp -lGL -lGLEW -lglfw
+CC = g++
+CPPFLAGS = -g -Wall
+
+all : load_stb_image.cpp Utils.cpp Svenium.cpp Cubo.cpp Scene.cpp Scene1.cpp SceneManager.cpp main.cpp
+	g++ -g -Wall -Wextra -o SvenGL load_stb_image.cpp Utils.cpp Svenium.cpp Cubo.cpp Scene.cpp Scene1.cpp SceneManager.cpp main.cpp -lGL -lGLEW -lglfw
+
+
+
+easy : load_stb_image.cpp Utils.cpp Svenium.cpp Cubo.cpp Scene1.cpp main.cpp
+	g++ *.cpp -I. -o SvenGL
 
 clean:
-	$(RM) Tarea2
+	$(RM) SvenGL
