@@ -29,3 +29,21 @@ class CuboLuz : public Drawable
 
     static void InitValues();
 };
+
+class Cube : public Drawable 
+{
+    public:
+    Cube();
+    glm::vec3 pos;
+    glm::vec3 rot;
+    glm::vec3 scale;
+    glm::mat4 Transform;
+
+    unsigned int VBO;
+    unsigned int Texture;
+
+
+    void Init() override;
+    void Update(float dt) override;
+    void Draw() override;
+};

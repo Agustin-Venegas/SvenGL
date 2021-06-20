@@ -7,6 +7,13 @@ Nombres: Gabriel Jimenez y Agustín Venegas
 Las texturas se cargan con una libreria externa (stb_image.h), como PNGs
 (el formato DDS no es compatible en uno de los sistemas)
 
+SE NECESITA FREETYPE2 PARA COMPILAR
+Se usa para cargar fuentes
+El Makefile buscará en /usr/include/freetype2
+Para instalar, se puede usar el siguiente comando
+sudo apt-get install libfreetype6-dev
+
+
 
 Hay 4 tipos de luz:
 Ambiental/direccional (rojo, desde arriba a la derecha)

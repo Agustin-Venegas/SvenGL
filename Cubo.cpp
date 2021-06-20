@@ -202,14 +202,9 @@ void CuboLuz::Draw()
     //glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-    
-
     Utils::USetMat4(Shader, "model", Transform);
     Utils::USetMat4(Shader, "view", Scene1::cam);
     Utils::USetMat4(Shader, "projection", Utils::projection);
-
-
-    
 
     
     glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -229,4 +224,24 @@ void CuboLuz::Update(float dt)
     {
         intensidad = 0;
     }
+}
+
+Cube::Cube() 
+{
+    
+}
+
+void Cube::Update(float dt) 
+{
+
+}
+
+void Cube::Draw() 
+{
+
+}
+
+void Cube::Init() 
+{
+    
 }

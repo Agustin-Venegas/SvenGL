@@ -2,6 +2,9 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -11,6 +14,7 @@
 #include "Utils.h"
 #include "Cubo.h"
 #include "Scene1.h"
+#include "SceneManager.h"
 #include "Svenium.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -63,6 +67,7 @@ int main()
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
 
     Scene1 scene = Scene1();
+    SceneManager::Instance->AddScene(scene);
 	
     // render loop
     // -----------
@@ -83,8 +88,8 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-        scene.Update(Utils::deltatime);
-        scene.Draw(Utils::deltatime);
+        SceneManager::Instance->Update(Utils::deltatime);
+        SceneManager::Instance->Draw(Utils::deltatime);
  
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
