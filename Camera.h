@@ -1,7 +1,6 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -15,9 +14,9 @@ enum Camera_Movement {
     RIGHT
 };
 
-// Default camera values
-const float YAW         = -90.0f; //movimiento de la camara en la X-axis
-const float PITCH       =  0.0f; //movimiento de la camara en la Y-axis
+// Valores default de la camara
+const float YAW         = -90.0f; //movimiento inicial de la camara en el eje X
+const float PITCH       =  0.0f; //movimiento inicial de la camara en el eje Y
 const float SPEED       =  2.5f; //velocidad de la camara al moverse
 const float SENSITIVITY =  0.1f; //sensivilidad al responder con un comando
 const float ZOOM        =  45.0f; //movimiento de la camara al aplicar un acercamiento
@@ -33,9 +32,11 @@ public:
     glm::vec3 Up;
     glm::vec3 Right;
     glm::vec3 WorldUp;
+
     // Angulos de Euler
     float Yaw;
     float Pitch;
+
     // Opciones de la camara
     float MovementSpeed;
     float MouseSensitivity;
@@ -50,6 +51,7 @@ public:
         Pitch = pitch;
         updateCameraVectors();
     }
+
     // Constructor con valores escalares
     Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
     {
@@ -81,7 +83,7 @@ public:
     }
 
     // procesa el input proveniente al mover el mouse
-    void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true)
+    void ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch = true)
     {
         xoffset *= MouseSensitivity;
         yoffset *= MouseSensitivity;
@@ -112,7 +114,7 @@ public:
             Zoom = 45.0f; 
     }
 
-private:
+    private:
     // Calcula los vectores de la camara para actualizar las posiciones y direcciones
     void updateCameraVectors()
     {
