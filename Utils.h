@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 
 #include <iostream>
+#include <vector>
 
 
 using namespace std;
@@ -14,6 +15,7 @@ class Utils
     public:
 
     static GLFWwindow* window;
+    //static unsigned int textureBuffer; //buffer de pantalla
 
     static float deltatime; //tiempo frame
     static bool CheckShaderCompile(GLuint shader);
@@ -24,8 +26,9 @@ class Utils
     //funciones matematicas
     static glm::vec3 MatPos(glm::mat4 matr);
 
-    //funcion textura
+    //funciones texturas
     static unsigned int loadTexture(string path);
+    static unsigned int loadCubemap(vector<std::string> faces);
 
     //funcion VBO
     static unsigned int CreateVBO(float vert[], int amt);

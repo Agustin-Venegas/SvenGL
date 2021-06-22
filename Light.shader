@@ -58,7 +58,8 @@ in vec3 FragPos;
 in vec3 Normal;
 in vec2 TexCoords;
 
-#define NRO_LUCES 2
+//desafortunadamente, no pueden variar estas luces
+#define NRO_LUCES 1
 
 //valores a ser asignados
 //IMPORTANTE: ASIGNAR CON UNIFORMS
@@ -68,6 +69,7 @@ uniform PointLight pointLights[NRO_LUCES];
 uniform SpotLight spotLight;
 uniform Material material;
 uniform bool flash; //si hay linterna o no
+uniform bool UseSpec; //si hay specular map o no
 
 //declaraciones de funciones
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
@@ -106,9 +108,15 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     //sombreado difuso, dependiendo del angulo
     float diff = max(dot(normal, lightDir), 0.0);
 
-    //componente especular
-    vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    //componente especular reflejado
+    vec3 reflectDir = vec3(0.0f);
+    float spec = 0.0f;
+
+    if (UseSpec) //solo si lo usamos
+    {
+        reflectDir = reflect(-lightDir, normal);
+        spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    }
 
     //combinar y regresar componentes, con el material en la textura
     vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoords));
@@ -127,8 +135,14 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     float diff = max(dot(normal, lightDir), 0.0);
 
     //componente especular reflejado
-    vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 reflectDir = vec3(0.0f);
+    float spec = 0.0f;
+
+    if (UseSpec) //solo si lo usamos
+    {
+        reflectDir = reflect(-lightDir, normal);
+        spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    }
     
     //atenuar segun distancia y constante cuadratica
     float distance = length(light.position - fragPos);
@@ -137,8 +151,10 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     //combinar con textura
     vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoords));
     vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoords));
-    vec3 specular = light.specular * spec * vec3(texture(material.specular, TexCoords));
-
+    
+    vec3 specular = vec3(0.0f, 0.0f, 0.0f);
+    if (UseSpec) specular = light.specular * spec * vec3(texture(material.specular, TexCoords));
+    
     //aplicar valor de atenuacion y regresar
     ambient *= attenuation;
     diffuse *= attenuation;
@@ -157,8 +173,14 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     float diff = max(dot(normal, lightDir), 0.0);
 
     //reflejo especular
-    vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 reflectDir = vec3(0.0f);
+    float spec = 0.0f;
+
+    if (UseSpec) //solo si lo usamos
+    {
+        reflectDir = reflect(-lightDir, normal);
+        spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    }
 
     //atenuar, igual que arriba
     float distance = length(light.position - fragPos);
@@ -172,7 +194,9 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     //aplicar a textura
     vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoords));
     vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoords));
-    vec3 specular = light.specular * spec * vec3(texture(material.specular, TexCoords));
+
+    vec3 specular = vec3(0.0f, 0.0f, 0.0f);
+    if (UseSpec) specular = light.specular * spec * vec3(texture(material.specular, TexCoords));
 
     //atenuar y regresar
     float ligthVal = attenuation * intensity;

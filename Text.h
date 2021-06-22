@@ -1,3 +1,5 @@
+#pragma once
+
 #include <glm/glm.hpp>
 
 #include <ft2build.h>
@@ -6,8 +8,11 @@
 #include <vector>
 
 //toda la información de una letra de FreeType
-struct Character 
+class Character 
 {
+    public:
+    Character();
+    Character(unsigned int t, glm::ivec2 s, glm::ivec2 b, unsigned int a);
     unsigned int Texture;
     glm::ivec2 Size;
     glm::ivec2 Bearing;

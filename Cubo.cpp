@@ -226,9 +226,28 @@ void CuboLuz::Update(float dt)
     }
 }
 
+
+unsigned int Cube::CubeShader = 0;
+unsigned int Cube::VBO = 0;
+unsigned int Cube::CubeVAO = 0;
+
+Cube::Cube(std::string texture) 
+{
+    Transform = glm::mat4(1.0f);
+    Texture = Utils::loadTexture(texture);
+    useSpec = false;
+}
+
 Cube::Cube() 
 {
-    
+
+}
+
+Cube::Cube(std::string texture, glm::mat4 transform) 
+{
+    Transform = transform;
+    Texture = Utils::loadTexture(texture);
+    useSpec = false;
 }
 
 void Cube::Update(float dt) 
@@ -238,10 +257,134 @@ void Cube::Update(float dt)
 
 void Cube::Draw() 
 {
+    // bindear difuso
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, Texture);
+    
+    // bindear mapa specular
+    glActiveTexture(GL_TEXTURE1);
+    if (useSpec) 
+    {
+        glBindTexture(GL_TEXTURE_2D, Specular);
+    }
 
+    Utils::USetBool(CubeShader, "UseSpec", useSpec);
+    Utils::USetMat4(CubeShader, "model", Transform);
+
+    
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
-void Cube::Init() 
+void Cube::Init() {}
+void Cube::InitVals() 
 {
-    
+    //Crear Shader
+    unsigned int vs = glCreateShader(GL_VERTEX_SHADER);
+    Utils::CompileShader(vs, Utils::ReadFile("LightVertex.shader"));
+    unsigned int fs = glCreateShader(GL_FRAGMENT_SHADER);
+    Utils::CompileShader(fs, Utils::ReadFile("Light.shader"));
+    CubeShader = glCreateProgram();
+    glAttachShader(CubeShader, vs);
+    glAttachShader(CubeShader, fs);
+    glLinkProgram(CubeShader);
+    Utils::CheckProgramCompile(CubeShader);
+    glDeleteShader(vs);
+    glDeleteShader(fs);
+
+    //setear el VAO y VBO que todos usaran
+    //crear VAO
+    glGenVertexArrays(1, &CubeVAO);
+    glBindVertexArray(CubeVAO);
+
+    float vertices[] = {
+        // positions          // normals           // texture coords
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
+    };
+
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    //setear atributos VAO
+    //posicion
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    //normales
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    //UV
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+}
+
+//HACER ESTO UNA VEZ ANTES DE DIBUJAR LOS CUBOS
+void Cube::PreDraw(Camera c) 
+{
+    glUseProgram(CubeShader);
+    glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+
+    glBindVertexArray(CubeVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
+
+    Utils::USetFloat(CubeShader, "material.shininess", 32.0f);
+
+    Utils::USetVec3(CubeShader, "viewPos", c.Position);
+    Utils::USetMat4(CubeShader, "view", c.GetViewMatrix());
+    Utils::USetMat4(CubeShader, "projection", Utils::projection);
+}
+
+
+
+void RotatingCube::Update(float dt) 
+{
+    trayectoria += dt/4.0f;
+
+    Transform = glm::rotate(Transform, glm::radians(trayectoria), glm::vec3(0.0f, 1.0f, 0.0f));
 }

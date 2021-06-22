@@ -6,12 +6,24 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "Utils.h"
+
 
 unsigned int Text::Shader = 0;
 unsigned int Text::VAO = 0;
 unsigned int Text::VBO = 0;
+
+Character::Character() {}
+Character::Character(unsigned int t, glm::ivec2 s, glm::ivec2 b, unsigned int a) 
+{
+    Texture = t;
+    Size = s;
+    Bearing = b;
+    Advance = a;
+}
 
 void Text::Init() 
 {
@@ -41,6 +53,8 @@ void Text::Init()
     //solo un atributo
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+
+    Utils::USetInt(Text::Shader, "text", 0);
     
     //deseleccionar estos arrays y buffers
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -103,12 +117,12 @@ Font Text::LoadFont(const char * filename)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         
         //guardar informacion de caracter
-        Character character = {
+        Character character = Character(
             texture,
             glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
             glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
             static_cast<unsigned int>(face->glyph->advance.x)
-        };
+        );
 
         font.Characters.insert(std::pair<char, Character>(c, character));
     }
@@ -206,7 +220,7 @@ void Text::LoadFonts(std::vector<std::string> filenames)
 
         Text::LoadFont(c);
 
-        //ESTA WEA LEAKEA MEMORIA
+        //ESTA WEA LEAKEA MEMORIA, cuidado
         delete c;
     }
 
@@ -222,6 +236,7 @@ Font::Font()
 void Font::RenderText(std::string text, float x, float y, float scale, glm::vec3 color) 
 {
     //configuracion de openGL
+    glDisable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -231,6 +246,10 @@ void Font::RenderText(std::string text, float x, float y, float scale, glm::vec3
     glUseProgram(Text::Shader);
 
     glUniform3f(glGetUniformLocation(Text::Shader, "textColor"), color.x, color.y, color.z);
+    
+    glm::mat4 proj = glm::ortho(0.0f, static_cast<float>(800), 0.0f, static_cast<float>(600));
+    
+    Utils::USetMat4(Text::Shader,"projection", proj);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(Text::VAO);
 
@@ -239,6 +258,9 @@ void Font::RenderText(std::string text, float x, float y, float scale, glm::vec3
     for (c = text.begin(); c != text.end(); c++) 
     {
         Character ch = Characters[*c];
+
+        glBindTexture(GL_TEXTURE_2D, ch.Texture);
+        //Utils::USetInt(Text::Shader, "text", ch.Texture);
 
         float xpos = x + ch.Bearing.x * scale;
         float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
@@ -258,7 +280,7 @@ void Font::RenderText(std::string text, float x, float y, float scale, glm::vec3
         };
 
         //Renderizar la textura de la letra en el rectangulo del VBO
-        glBindTexture(GL_TEXTURE_2D, ch.Texture);
+        
 
         ////actualizar la info
         glBindBuffer(GL_ARRAY_BUFFER, Text::VBO);
@@ -271,9 +293,11 @@ void Font::RenderText(std::string text, float x, float y, float scale, glm::vec3
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
         //Avanzar la posicion segun el ancho de la letra
-        x += (ch.Advance >> 6) * scale; //2^6 = 64
+        x += (ch.Advance >> 6) * scale; //64
     }
 
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_BLEND);
 }

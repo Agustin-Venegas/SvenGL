@@ -10,7 +10,8 @@ Las texturas se cargan con una libreria externa (stb_image.h), como PNGs
 SE NECESITA FREETYPE2 PARA COMPILAR
 Se usa para cargar fuentes
 El Makefile buscará en /usr/include/freetype2
-Para instalar, se puede usar el siguiente comando
+
+Para instalarlo, se puede usar el siguiente comando
 sudo apt-get install libfreetype6-dev
 
 
@@ -27,6 +28,8 @@ La componente especular del cubo principal depende del angulo de ataque de las l
 La luz del cubo blanco se apaga y prende 4 veces por segundo
 
 Instrucciones:
+Usar el Mouse para mover la camara
+
 1, 2 y 3 para cambiar de textura del cubo principal
 + y - en el teclado numerico para escalar el cubo principal (de 0.1x hasta 5x)
 8, 4, 6 y 2 en el teclado numerico para mover el cubo principal
