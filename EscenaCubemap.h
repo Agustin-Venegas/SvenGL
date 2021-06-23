@@ -27,6 +27,7 @@ class EscenaCubemap : public Scene , public MouseScene
 
     std::vector<Cube> walls;
     RotatingCube rc;
+    RotatingCube eduardo;
 
     void SetLights();
 };

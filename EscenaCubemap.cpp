@@ -207,7 +207,17 @@ EscenaCubemap::EscenaCubemap()
 
     rc = RotatingCube(std::string("disk.png"),t);
 
+    //cubo eduardo
+    t = glm::mat4(1.0f);
+    pos = glm::vec3(1.25f, 2.0f, -20.0f);
+    rot = glm::radians(0.0f);
+    scale = glm::vec3(0.75f, 0.75f, 0.75f);
+    
+    t = glm::translate(t, pos);
+    t = glm::rotate(t,rot, glm::vec3(0.0f, 1.0f, 0.0f));
+    t = glm::scale(t, scale);
 
+    eduardo = RotatingCube(std::string("eduardo.png"),t);
 }
 
 void EscenaCubemap::Update(float dt)
@@ -228,12 +238,21 @@ void EscenaCubemap::Update(float dt)
 
 
     rc.Update(dt);
+    eduardo.Update(dt/2.0f);
 
     //deteccion de portal
     float dist = glm::length(camera.Position-glm::vec3(1.25f, 0.5f, -5.0f));
     if (dist<0.5f) 
     {
-        SceneManager::Instance->ChangeScene(0);
+        camera.Position = glm::vec3(0.0f,0.0f,0.0f);
+        SceneManager::Instance->ChangeScene(1);
+    }
+
+    dist = glm::length(camera.Position-glm::vec3(1.25f, 2.0f, -20.0f));
+    if (dist<0.5f) 
+    {
+        camera.Position = glm::vec3(0.0f,0.0f,0.0f);
+        SceneManager::Instance->ChangeScene(3);
     }
 }
 
@@ -251,6 +270,9 @@ void EscenaCubemap::Draw(float dt)
 
     rc.Draw();
 
+    //dibujar al eduardo
+    eduardo.Draw();
+
     //El Skybox se dibuja despues de la escena
     glDepthFunc(GL_LEQUAL);  //se dibujara solo donde no hayamos dibujado la escena
     glUseProgram(skyShader);
@@ -266,7 +288,6 @@ void EscenaCubemap::Draw(float dt)
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindVertexArray(0);
     glDepthFunc(GL_LESS); //poner la funcion de corte a la normalidad
-
 
 }
 

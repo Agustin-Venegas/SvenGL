@@ -34,7 +34,7 @@ void SceneManager::Draw(float dt)
     {
         if (timer == 0.0f) 
         {
-            screen.Texture = Utils::loadTexture(std::string("menu.png"));
+            screen.Texture = Utils::loadTexture(std::string("load.png"));
         }
         
         timer +=dt;

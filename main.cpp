@@ -13,6 +13,7 @@
 #include "Scene1.h"
 #include "EscenaCubemap.h"
 #include "EscenaInicial.h"
+#include "EscenaFinal.h"
 #include "SceneManager.h"
 #include "Svenium.h"
 #include "Text.h"
@@ -81,9 +82,11 @@ int main()
     
 
 	Scene1 scene = Scene1();
+    EscenaFinal scene3 = EscenaFinal();
     EscenaCubemap scene2 = EscenaCubemap();
     EscenaInicial scene0 = EscenaInicial();
     SceneManager::Instance->AddScene(scene);
+    SceneManager::Instance->AddScene(scene3);
     SceneManager::Instance->AddScene(scene2);
     SceneManager::Instance->AddScene(scene0);
 
@@ -103,7 +106,7 @@ int main()
 
         // render
         // ------
-        glClearColor(0.15f, 0.05f, 0.05f, 1.0f);
+        glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         SceneManager::Instance->Update(Utils::deltatime);

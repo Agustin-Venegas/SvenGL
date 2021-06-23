@@ -6,6 +6,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+Font EscenaInicial::font;
+
 EscenaInicial::EscenaInicial() 
 {
     Plane::InitVals();
@@ -23,11 +25,13 @@ void EscenaInicial::Update(float dt)
         glfwSetWindowShouldClose(window, true);
 
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-        SceneManager::Instance->ChangeScene(1);
+        SceneManager::Instance->ChangeScene(2);
 }
 
 void EscenaInicial::Draw(float dt) 
 {
     img.Draw();
     font.RenderText(std::string("Presiona Espacio para continuar"), 10.0f ,400.0f, 0.6f, glm::vec3(1.0f,1.0f,1.0f));
+    font.RenderText(std::string("Objetivo: Encontrar el Disco"), 10.0f,500.0f, 0.5f, glm::vec3(1.0f, 0.9f, 0.9f));
+    font.RenderText(std::string("Creado por Agustin Venegas y Gabriel Jimenez"), 200.0f,100.0f, 0.4f, glm::vec3(1.0f, 0.9f, 0.9f));
 }

@@ -11,8 +11,10 @@ class EscenaInicial : public Scene
     void Init() override;
     void Update(float dt) override;
     void Draw(float dt) override;
+    
+    static Font font;
 
     private:
-    Font font;
+    
     Plane img;
 };

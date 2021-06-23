@@ -300,4 +300,5 @@ void Font::RenderText(std::string text, float x, float y, float scale, glm::vec3
     glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_CULL_FACE);
     glDisable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
 }
