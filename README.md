@@ -10,29 +10,21 @@ Las texturas se cargan con una libreria externa (stb_image.h), como PNGs
 SE NECESITA FREETYPE2 PARA COMPILAR
 Se usa para cargar fuentes
 El Makefile buscará en /usr/include/freetype2
-Para instalar, se puede usar el siguiente comando
+
+Para instalarlo, se puede usar el siguiente comando
 sudo apt-get install libfreetype6-dev
 
 
-
-Hay 4 tipos de luz:
-Ambiental/direccional (rojo, desde arriba a la derecha)
-Esferica (los cubitos de colores)
-Direccional SpotLight (sale desde la camara, acercar el cubo para apreciar)
-
-Hay dos otros tipos de iluminado, que tienen que ver con la textura cargada
-La iluminación difusa del cubo principal viene a partir de la textura, y se mezcla con las luces que le llegan
-La componente especular del cubo principal depende del angulo de ataque de las luces con respecto al objeto, y dependen del mapa especular cargado.
-
-La luz del cubo blanco se apaga y prende 4 veces por segundo
-
 Instrucciones:
-1, 2 y 3 para cambiar de textura del cubo principal
-+ y - en el teclado numerico para escalar el cubo principal (de 0.1x hasta 5x)
-8, 4, 6 y 2 en el teclado numerico para mover el cubo principal
 
-P prende y apaga la luz spotlight (acercar el cubo con 2 en el teclado
-numerico para ver mejor el efecto)
+En la primera escena, presionar espacio para comenzar
+Usar el Mouse para mover la camara
+WASD para moverse en el mundo ("controles de vuelo"). No hay colisiones
+
+ESC para salir
+
+Entrar al cubo rotatorio cambia de escena
+Entrar al cuadro de Felipe Besoaín cambia de escena
 
 
                                                                                 

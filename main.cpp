@@ -2,9 +2,6 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -14,10 +11,16 @@
 #include "Utils.h"
 #include "Cubo.h"
 #include "Scene1.h"
+#include "EscenaCubemap.h"
+#include "EscenaInicial.h"
+#include "EscenaFinal.h"
 #include "SceneManager.h"
 #include "Svenium.h"
+#include "Text.h"
+#include "Plane.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void processInput(GLFWwindow *window);
 
 // settings
@@ -49,11 +52,18 @@ int main()
         glfwTerminate();
         return -1;
     }
+
+
     Utils::window = window;
+
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
 
-    glewExperimental = true; // Needed for core profile
+    //Capturar el mouse
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    glewExperimental = true; //Si borro esto no corre
 	if (glewInit() != GLEW_OK)
 	{
 		fprintf(stderr, "Failed to initialize GLEW\n");
@@ -66,9 +76,20 @@ int main()
 	
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
 
-    Scene1 scene = Scene1();
+    glEnable(GL_DEPTH_TEST);
+
+    Text::Init();
+    
+
+	Scene1 scene = Scene1();
+    EscenaFinal scene3 = EscenaFinal();
+    EscenaCubemap scene2 = EscenaCubemap();
+    EscenaInicial scene0 = EscenaInicial();
     SceneManager::Instance->AddScene(scene);
-	
+    SceneManager::Instance->AddScene(scene3);
+    SceneManager::Instance->AddScene(scene2);
+    SceneManager::Instance->AddScene(scene0);
+
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -82,11 +103,11 @@ int main()
         // -----
         processInput(window);
 
+
         // render
         // ------
-        glClearColor(0.15f, 0.2f, 0.25f, 1.0f);
+        glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
         SceneManager::Instance->Update(Utils::deltatime);
         SceneManager::Instance->Draw(Utils::deltatime);
@@ -107,10 +128,14 @@ int main()
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-
 }
 
 void processInput(GLFWwindow *window) 
 {
 
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    SceneManager::Instance->MouseMovement(xpos, ypos);
 }

@@ -11,12 +11,15 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+#include <vector>
 
 using namespace std;
 
 GLuint Utils::program;//no borrar
 
 GLFWwindow* Utils::window;
+
+//unsigned int Utils::textureBuffer = 0; //buffer de pantalla
 
 glm::mat4 Utils::projection = glm::perspective(glm::radians(45.0f), (float)800/(float)600, 0.1f, 100.0f);
 
@@ -92,7 +95,7 @@ glm::vec3 Utils::MatPos(glm::mat4 matr)
     return glm::vec3(matr[3]);
 }
 
-//funcion para cargar una textura. Regresa un id
+//funcion para cargar una textura. Regresa un id. ESPERA PNG PORQUE SOY UN IDIOTA
 unsigned int Utils::loadTexture(string path)
 {
 
@@ -132,12 +135,48 @@ unsigned int Utils::loadTexture(string path)
     else
     {
         //ERROR
-        std::cout << "ERROR cargar textura: " << path << std::endl;
+        std::cout << "ERROR al cargar textura: " << path << std::endl;
         stbi_image_free(data);
     }
 
     return textureID;
 }
+
+//cargar una textura como cubemap
+//orden: X, -X, Y, -Y, Z, -Z
+unsigned int Utils::loadCubemap(vector<std::string> faces)
+{
+    //voltear imagen
+    stbi_set_flip_vertically_on_load(true); 
+    
+    unsigned int textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+    int width, height, nrChannels;
+    for (unsigned int i = 0; i < faces.size(); i++)
+    {
+        unsigned char *data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
+        if (data)
+        {
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            stbi_image_free(data);
+        }
+        else
+        {
+            std::cout << "Cubemap texture failed to load at path: " << faces[i] << std::endl;
+            stbi_image_free(data);
+        }
+    }
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+    return textureID;
+}
+
 
 //pide un pointer a un array de floats, y la cantidad de floats en ese array
 //Hay que bindear el VAO primero

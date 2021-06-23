@@ -1,6 +1,9 @@
+#pragma once
+
 #include "Scene.h"
 #include <vector>
 #include <memory>
+#include "Plane.h"
 
 class SceneManager 
 {
@@ -17,7 +20,10 @@ class SceneManager
     void AddScene(Scene& s);
     void ChangeScene(int i);
 
+    void MouseMovement(double x, double y); //ve si la escena usa mouse
+
     private:
     bool loading;
     float timer;
+    Plane screen;
 };
